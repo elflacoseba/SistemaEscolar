@@ -79,9 +79,7 @@ namespace SistemaEscolar.Application.Services
                 return response;
             }
 
-            var user = _mapper.Map<User>(requestDto);
-
-            user.State = (int)StateTypes.Active;
+            var user = _mapper.Map<User>(requestDto); 
 
             response.Data = await _unitOfWork.Users.AddAsync(user);
 

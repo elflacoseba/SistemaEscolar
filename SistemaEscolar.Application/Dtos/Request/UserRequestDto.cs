@@ -9,5 +9,7 @@
         public string? Email { get; set; }
 
         public string? Image { get; set; }
+
+        public int State { get; set; }
     }
 }
