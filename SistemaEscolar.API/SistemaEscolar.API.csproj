@@ -11,7 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\SistemaEscolar.Application\SistemaEscolar.Application.csproj" />
+    <ProjectReference Include="..\SistemaEscolar.Infrastructure\SistemaEscolar.Infrastructure.csproj" />
+    <ProjectReference Include="..\SistemaEscolar.Utilities\SistemaEscolar.Utilities.csproj" />
   </ItemGroup>
 
 </Project>
