@@ -39,7 +39,7 @@ namespace SistemaEscolar.Infrastructure.Persistence.Repositories
         public async Task<bool> AddAsync(T entity)
         {
             entity.AuditCreateUser = 1;
-            entity.AuditCreateDate = DateTime.UtcNow;
+            entity.AuditCreateDate = DateTime.UtcNow;            
 
             await _context.AddAsync(entity);
 
@@ -67,6 +67,7 @@ namespace SistemaEscolar.Infrastructure.Persistence.Repositories
 
             entity.AuditDeleteUser = 1;
             entity.AuditDeleteDate = DateTime.UtcNow;
+            entity.State = (int)StateTypes.Inactive;
 
             _context.Update(entity);
 

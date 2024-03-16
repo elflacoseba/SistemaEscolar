@@ -80,6 +80,9 @@ namespace SistemaEscolar.Application.Services
             }
 
             var user = _mapper.Map<User>(requestDto);
+
+            user.State = (int)StateTypes.Active;
+
             response.Data = await _unitOfWork.Users.AddAsync(user);
 
             if (response.Data)
@@ -101,7 +104,7 @@ namespace SistemaEscolar.Application.Services
             var response = new BaseResponse<bool>();
             var userEdit = await GetUserById(userId);
 
-            if (userEdit.Data == null)
+            if (userEdit == null)
             {
                 response.IsSuccess = false;
                 response.Message = ReplyMessage.MESSAGE_QUERY_EMPTY;
