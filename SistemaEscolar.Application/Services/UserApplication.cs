@@ -1,14 +1,18 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using SistemaEscolar.Application.Commons.Base;
-using SistemaEscolar.Application.Dtos.Request;
-using SistemaEscolar.Application.Dtos.Response;
+using SistemaEscolar.Application.Dtos.User.Request;
+using SistemaEscolar.Application.Dtos.User.Response;
 using SistemaEscolar.Application.Interfaces;
 using SistemaEscolar.Application.Validators;
 using SistemaEscolar.Domain.Entities;
-using SistemaEscolar.Infrastructure.Commons.Bases.Request;
-using SistemaEscolar.Infrastructure.Commons.Bases.Response;
 using SistemaEscolar.Infrastructure.Persistence.Interfaces;
 using SistemaEscolar.Utilities.Static;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using BC = BCrypt.Net.BCrypt;
 
 namespace SistemaEscolar.Application.Services
 {
@@ -16,13 +20,15 @@ namespace SistemaEscolar.Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
         private readonly UserValidator _validationRules;
 
-        public UserApplication(IUnitOfWork unitOfWork, IMapper mapper, UserValidator validationRules)
+        public UserApplication(IUnitOfWork unitOfWork, IMapper mapper, UserValidator validationRules, IConfiguration configuration)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _validationRules = validationRules;
+            _configuration = configuration;
         }
 
         public async Task<BaseResponse<IEnumerable<UserResponseDto>>> GetAllUsers()
@@ -79,7 +85,8 @@ namespace SistemaEscolar.Application.Services
                 return response;
             }
 
-            var user = _mapper.Map<User>(requestDto); 
+            var user = _mapper.Map<User>(requestDto);
+            user.PasswordHash = BC.HashPassword(requestDto.Password);
 
             response.Data = await _unitOfWork.Users.AddAsync(user);
 
@@ -140,7 +147,7 @@ namespace SistemaEscolar.Application.Services
 
                 return response;
             }
-    
+
             response.Data = await _unitOfWork.Users.RemoveAsync(userId);
 
             if (response.Data)
@@ -156,5 +163,61 @@ namespace SistemaEscolar.Application.Services
 
             return response;
         }
+
+        public Task<BaseResponse<UserResponseDto>> GetUserByName(string userName)
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<BaseResponse<string>> GenerateToken(TokenRequestDto requestDto)
+        {
+            var response = new BaseResponse<string>();
+            var userAccount = await _unitOfWork.Users.AccountByUserName(requestDto.UserName!);
+
+            if (userAccount is not null)
+            {
+                if (BC.Verify(requestDto.Password, userAccount.PasswordHash))
+                {
+                    response.IsSuccess = true;
+                    response.Data = GenerateToken(userAccount);
+                    response.Message = ReplyMessage.MESSAGE_TOKEN;
+                }
+                else
+                {
+                    response.IsSuccess = false;
+                    response.Message = ReplyMessage.MESSAGE_TOKEN_ERROR;
+                }
+            }
+
+            return response;
+        }
+
+        private string GenerateToken(User user)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]!));
+
+            var credential = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.NameId, user.Email!),
+                new Claim(JwtRegisteredClaimNames.FamilyName, user.UserName!),
+                new Claim(JwtRegisteredClaimNames.GivenName, user.Email!),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.Id.ToString()!),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, Guid.NewGuid().ToString(), ClaimValueTypes.Integer64)
+            };
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Issuer"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(int.Parse(_configuration["Jwt:Expires"]!)),
+                notBefore: DateTime.UtcNow,
+                signingCredentials: credential
+                );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
     }
 }

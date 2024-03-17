@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using SistemaEscolar.Application.Dtos.Request;
-using SistemaEscolar.Application.Dtos.Response;
+using SistemaEscolar.Application.Dtos.User.Request;
+using SistemaEscolar.Application.Dtos.User.Response;
 using SistemaEscolar.Domain.Entities;
-using SistemaEscolar.Infrastructure.Commons.Bases.Response;
 using SistemaEscolar.Utilities.Static;
 
 namespace SistemaEscolar.Application.Mappers
@@ -12,13 +11,12 @@ namespace SistemaEscolar.Application.Mappers
         public UserMappingsProfile()
         {
             CreateMap<User, UserResponseDto>()
-                .ForMember(x => x.StateUser, x => x.MapFrom(y => y.State.Equals((int)StateTypes.Active) ? "Activo" : "Inactivo" ))
-                .ReverseMap();
+               .ForMember(x => x.StateUser, x => x.MapFrom(y => y.State.Equals((int)StateTypes.Active) ? "Activo" : "Inactivo"))
+               .ReverseMap();
 
-            CreateMap<BaseEntityResponse<User>, BaseEntityResponse<UserResponseDto>>()
-                .ReverseMap();
+            CreateMap<UserRequestDto, User>();
 
-            CreateMap<UserRequestDto, User>();                                  
+            CreateMap<TokenRequestDto, User>();
         }
     }
 }

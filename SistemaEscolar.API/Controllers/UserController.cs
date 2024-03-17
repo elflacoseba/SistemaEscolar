@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SistemaEscolar.Application.Dtos.Request;
+using SistemaEscolar.Application.Dtos.User.Request;
 using SistemaEscolar.Application.Interfaces;
 
 namespace SistemaEscolar.API.Controllers
@@ -14,6 +15,14 @@ namespace SistemaEscolar.API.Controllers
         public UserController(IUserApplication userApplication)
         {
             _userApplication = userApplication;
+        }
+
+        [AllowAnonymous]
+        [HttpPost("Generate/Token")]
+        public async Task<IActionResult> GenerateToken([FromBody] TokenRequestDto requestDto)
+        {
+            var response = await _userApplication.GenerateToken(requestDto);
+            return Ok(response);
         }
 
         [HttpGet]
@@ -30,6 +39,7 @@ namespace SistemaEscolar.API.Controllers
             return Ok(response);
         }
 
+        [AllowAnonymous]
         [HttpPost("Register")]
         public async Task<IActionResult> RegisterUser([FromBody] UserRequestDto requestDto )
         {

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using SistemaEscolar.Application.Dtos.Request;
+using SistemaEscolar.Application.Dtos.User.Request;
 
 namespace SistemaEscolar.Application.Validators
 {
@@ -11,7 +11,7 @@ namespace SistemaEscolar.Application.Validators
                 .NotNull().WithMessage("El nombre de usuario no puede ser nulo.")
                 .NotEmpty().WithMessage("El nombre de usuario no puede estar vacío.");
 
-            RuleFor(x => x.PasswordHash)
+            RuleFor(x => x.Password)
                .NotNull().WithMessage("La contraseña es obligatoria.")
                .NotEmpty().WithMessage("La contraseña no puede estar vacía.")
                .MinimumLength(6).WithMessage("La contraseña debe contener al menos 6 caracteres.")
