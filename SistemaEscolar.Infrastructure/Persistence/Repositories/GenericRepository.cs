@@ -65,11 +65,7 @@ namespace SistemaEscolar.Infrastructure.Persistence.Repositories
         {
             T entity = await GetByIdAsync(id);
 
-            entity.AuditDeleteUser = 1;
-            entity.AuditDeleteDate = DateTime.UtcNow;
-            entity.State = (int)StateTypes.Inactive;
-
-            _context.Update(entity);
+            _context.Remove(entity);
 
             var recordAffected = await _context.SaveChangesAsync();
             return recordAffected > 0;

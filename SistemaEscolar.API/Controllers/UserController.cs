@@ -54,7 +54,7 @@ namespace SistemaEscolar.API.Controllers
             return Ok(response);
         }
 
-        [HttpPut("Delete/{userId:int}")]
+        [HttpDelete("Delete/{userId:int}")]
         public async Task<IActionResult> DeleteUser(int userId)
         {
             var response = await _userApplication.DeleteUser(userId);
