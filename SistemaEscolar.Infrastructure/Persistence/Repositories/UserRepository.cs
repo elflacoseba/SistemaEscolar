@@ -14,6 +14,13 @@ namespace SistemaEscolar.Infrastructure.Persistence.Repositories
             _context = context;
         }
 
+        public async Task<User> AccountByEmail(string email)
+        {
+            var account = await _context.Users.FirstOrDefaultAsync(x => x.Email!.Equals(email));
+
+            return account!;
+        }
+
         public async Task<User> AccountByUserName(string userName)
         {
             var account = await _context.Users.FirstOrDefaultAsync(x => x.UserName!.Equals(userName));

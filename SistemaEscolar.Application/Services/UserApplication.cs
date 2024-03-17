@@ -168,6 +168,7 @@ namespace SistemaEscolar.Application.Services
         {
             throw new NotImplementedException();
         }
+        
         public async Task<BaseResponse<string>> GenerateToken(TokenRequestDto requestDto)
         {
             var response = new BaseResponse<string>();
