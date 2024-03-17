@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaEscolar.Infrastructure.Persistence.Contexts;
 
@@ -11,9 +12,11 @@ using SistemaEscolar.Infrastructure.Persistence.Contexts;
 namespace SistemaEscolar.Infrastructure.Migrations
 {
     [DbContext(typeof(SistemaEscolarContext))]
-    partial class SistemaEscolarContextModelSnapshot : ModelSnapshot
+    [Migration("20240317210600_CreateTableInstitutions")]
+    partial class CreateTableInstitutions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,7 +57,6 @@ namespace SistemaEscolar.Infrastructure.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)");

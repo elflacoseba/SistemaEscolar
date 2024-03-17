@@ -9,11 +9,13 @@ namespace SistemaEscolar.Infrastructure.Persistence.Repositories
         private bool disposed = false;
 
         public IUserRepository Users { get; private set; }
+        public IInstitutionRepository Institutions { get; private set; }
 
         public UnitOfWork(SistemaEscolarContext context)
         {
             _context = context;
             Users = new UserRepository(_context);
+            Institutions = new InstitutionRepository(_context);
         }
 
         public void SaveChanges()

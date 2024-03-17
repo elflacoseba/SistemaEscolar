@@ -17,7 +17,7 @@ namespace SistemaEscolar.Infrastructure.Persistence.Contexts
         }
 
         public virtual DbSet<User> Users { get; set; } = null!;
-
+        public virtual DbSet<Institution> Institutions { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

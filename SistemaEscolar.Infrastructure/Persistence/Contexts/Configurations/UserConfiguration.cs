@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SistemaEscolar.Domain.Entities;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace SistemaEscolar.Infrastructure.Persistence.Contexts.Configurations
 {
     public class UserConfiguration : IEntityTypeConfiguration<User>
     {
-        public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.Property(e => e.Email)
                 .HasMaxLength(50)
