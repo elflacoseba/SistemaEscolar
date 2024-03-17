@@ -18,6 +18,7 @@ namespace SistemaEscolar.Application.Extensions
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             services.AddScoped<IUserApplication, UserApplication>();
+            services.AddScoped<IInstitutionApplication, InstitutionApplication>();
 
             return services;
         }

@@ -35,11 +35,12 @@ namespace SistemaEscolar.Infrastructure.Persistence.Repositories
 
             return getById!;
         }
-        
+
         public async Task<bool> AddAsync(T entity)
         {
             entity.AuditCreateUser = 1;
-            entity.AuditCreateDate = DateTime.UtcNow;            
+            entity.AuditCreateDate = DateTime.UtcNow;
+            entity.State = (int)StateTypes.Active;
 
             await _context.AddAsync(entity);
 
