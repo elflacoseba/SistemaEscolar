@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore.Storage.Json;
 using SistemaEscolar.Application.Commons.Base;
 using SistemaEscolar.Application.Dtos.Institution.Request;
 using SistemaEscolar.Application.Dtos.Institution.Response;
@@ -68,6 +69,7 @@ namespace SistemaEscolar.Application.Services
             var response = new BaseResponse<bool>();
             var validationResult = await _validationRules.ValidateAsync(requestDto);
 
+
             if (!validationResult.IsValid)
             {
                 response.IsSuccess = false;
@@ -77,9 +79,17 @@ namespace SistemaEscolar.Application.Services
                 return response;
             }
 
-            var institution = _mapper.Map<Institution>(requestDto);            
-
+            var institution = _mapper.Map<Institution>(requestDto);
+            institution.EducationalLevels.Clear();
+            
             response.Data = await _unitOfWork.Institutions.AddAsync(institution);
+            
+            foreach (int i in requestDto.EducationalLevelIds)
+            {
+              var ed = await _unitOfWork.EducationalLevels.GetByIdAsync(i);
+
+                await _unitOfWork.InstitutionEducationalLevels.CreateInstitutionEducationalLevelAsync(institution,ed);
+            }
 
             if (response.Data)
             {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SistemaEscolar.Domain.Entities;
+using System.Reflection.Emit;
 
 namespace SistemaEscolar.Infrastructure.Persistence.Contexts.Configurations
 {
@@ -33,22 +34,25 @@ namespace SistemaEscolar.Infrastructure.Persistence.Contexts.Configurations
                 .HasForeignKey(i => i.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany(d => d.EducationalLevels)
-                   .WithMany(p => p.Institutions)
-                   .UsingEntity<InstitutionEducationalLevel>(r => r.HasOne(prop => prop.EducationalLevel)
-                   .WithMany()
-                        .HasForeignKey(prop => prop.EducationalLevelId)
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_InstitutionEducationalLevel_EducationalLevels"),
-                    l => l.HasOne(prop => prop.Institution)
-                   .WithMany()
-                        .HasForeignKey(prop => prop.InstitutionId)
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_InstitutionEducationalLevel_Institutions"),
-                    j =>
-                    {
-                        j.HasKey(prop => new { prop.InstitutionId, prop.EducationalLevelId });
-                    });
+            builder
+                .HasMany(I => I.EducationalLevels)
+                .WithMany(N => N.Institutions)
+                .UsingEntity<InstitutionEducationalLevel>
+                (
+                ie => ie.HasOne(prop => prop.EducationalLevel)
+                .WithMany()
+                .HasForeignKey(prop => prop.EducationalLevelId),
+                ie => ie.HasOne(prop => prop.Institution)
+                .WithMany()
+                .HasForeignKey(prop => prop.InstitutionId),
+                ie =>
+                {
+                    ie.HasKey(prop => new { prop.InstitutionId, prop.EducationalLevelId });
+                }
+
+                );
+
+
         }
     }
 }

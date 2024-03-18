@@ -1,4 +1,6 @@
-﻿namespace SistemaEscolar.Application.Dtos.Institution.Request
+﻿using SistemaEscolar.Domain.Entities;
+
+namespace SistemaEscolar.Application.Dtos.Institution.Request
 {
     public class InstitutionRequestDto
     {
@@ -8,5 +10,7 @@
         public string? Email { get; set; }
         public string? Website { get; set; }
         public int UserId { get; set; }
+
+        public List<int> EducationalLevelIds { get; set; } = new List<int>();
     }
 }

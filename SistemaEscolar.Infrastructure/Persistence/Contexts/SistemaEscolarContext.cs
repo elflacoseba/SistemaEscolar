@@ -19,13 +19,13 @@ namespace SistemaEscolar.Infrastructure.Persistence.Contexts
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<Institution> Institutions { get; set; } = null!;
         public virtual DbSet<EducationalLevel> EducationalLevels { get; set; } = null!;
+        public virtual DbSet<InstitutionEducationalLevel> InstitutionEducationalLevels { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Modern_Spanish_CI_AS");
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
         }
 
     }
