@@ -15,15 +15,13 @@ namespace SistemaEscolar.Application.Services
     public class InstitutionApplication : IInstitutionApplication
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;        
         private readonly InstitutionValidator _validationRules;
 
-        public InstitutionApplication(IUnitOfWork unitOfWork, IMapper mapper, IConfiguration configuration, InstitutionValidator validationRules)
+        public InstitutionApplication(IUnitOfWork unitOfWork, IMapper mapper, InstitutionValidator validationRules)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _configuration = configuration;
+            _mapper = mapper;            
             _validationRules = validationRules;
         }
         public async Task<BaseResponse<IEnumerable<InstitutionResponseDto>>> GetAllInstitutions()

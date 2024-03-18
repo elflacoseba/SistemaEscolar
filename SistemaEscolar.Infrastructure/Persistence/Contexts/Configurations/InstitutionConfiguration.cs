@@ -32,6 +32,23 @@ namespace SistemaEscolar.Infrastructure.Persistence.Contexts.Configurations
                 .WithMany(u => u.Institutions)
                 .HasForeignKey(i => i.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(d => d.EducationalLevels)
+                   .WithMany(p => p.Institutions)
+                   .UsingEntity<InstitutionEducationalLevel>(r => r.HasOne(prop => prop.EducationalLevel)
+                   .WithMany()
+                        .HasForeignKey(prop => prop.EducationalLevelId)
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_InstitutionEducationalLevel_EducationalLevels"),
+                    l => l.HasOne(prop => prop.Institution)
+                   .WithMany()
+                        .HasForeignKey(prop => prop.InstitutionId)
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_InstitutionEducationalLevel_Institutions"),
+                    j =>
+                    {
+                        j.HasKey(prop => new { prop.InstitutionId, prop.EducationalLevelId });
+                    });
         }
     }
 }

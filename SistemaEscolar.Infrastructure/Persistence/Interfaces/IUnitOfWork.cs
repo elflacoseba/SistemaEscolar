@@ -4,6 +4,7 @@
     {        
         IUserRepository Users { get; }
         IInstitutionRepository Institutions { get; }
+        IEducationalLevelRepository EducationalLevels { get; }
 
         void SaveChanges();
         Task SaveChangesAsync();

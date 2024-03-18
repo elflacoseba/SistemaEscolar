@@ -2,6 +2,11 @@
 {
     public class Institution : BaseEntity
     {
+        public Institution()
+        {
+            EducationalLevels = new HashSet<EducationalLevel>();
+        }
+
         public string? Name { get; set; }
 
         public string? Address { get; set; }
@@ -16,5 +21,6 @@
 
         public virtual User? User { get; set; }
 
+        public virtual ICollection<EducationalLevel> EducationalLevels { get; set;}
     }
 }
