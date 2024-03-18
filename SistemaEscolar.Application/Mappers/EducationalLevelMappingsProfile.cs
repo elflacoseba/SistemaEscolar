@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SistemaEscolar.Application.Dtos.Institution.Response;
+using SistemaEscolar.Application.Dtos.EducationalLevel.Response;
 using SistemaEscolar.Domain.Entities;
 
 namespace SistemaEscolar.Application.Mappers
@@ -8,7 +8,7 @@ namespace SistemaEscolar.Application.Mappers
     {
         public EducationalLevelMappingsProfile()
         {
-            CreateMap<Institution, InstitutionResponseDto>()              
+            CreateMap<EducationalLevel, EducationalLevelResponseDto>()              
               .ReverseMap();
         }
     }
