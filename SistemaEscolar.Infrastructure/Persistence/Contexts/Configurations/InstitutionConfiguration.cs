@@ -24,7 +24,10 @@ namespace SistemaEscolar.Infrastructure.Persistence.Contexts.Configurations
             builder.Property(e => e.Website)
                 .HasMaxLength(100)
                 .IsUnicode(false);
-
+            builder.Property(e => e.AuditCreateDate)
+                .HasColumnType("datetime");
+            builder.Property(e => e.AuditUpdateDate)
+                .HasColumnType("datetime");
             builder.HasOne<User>(i => i.User)
                 .WithMany(u => u.Institutions)
                 .HasForeignKey(i => i.UserId)

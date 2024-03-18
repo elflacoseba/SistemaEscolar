@@ -20,6 +20,10 @@ namespace SistemaEscolar.Infrastructure.Persistence.Contexts.Configurations
             builder.Property(e => e.UserName)
                 .HasMaxLength(25)
                 .IsUnicode(false);
+            builder.Property(e => e.AuditCreateDate)
+                .HasColumnType("datetime");
+            builder.Property(e => e.AuditUpdateDate)
+                .HasColumnType("datetime");
         }
     }
 }
