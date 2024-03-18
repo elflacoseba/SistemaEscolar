@@ -13,7 +13,7 @@ namespace SistemaEscolar.Infrastructure.Persistence.Contexts
 
         public SistemaEscolarContext(DbContextOptions<SistemaEscolarContext> options) : base(options)
         {
-
+            
         }
 
         public virtual DbSet<User> Users { get; set; } = null!;

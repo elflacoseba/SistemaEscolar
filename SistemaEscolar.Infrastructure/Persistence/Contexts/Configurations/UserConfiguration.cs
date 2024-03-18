@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SistemaEscolar.Domain.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SistemaEscolar.Utilities.Static;
 
 namespace SistemaEscolar.Infrastructure.Persistence.Contexts.Configurations
 {
@@ -23,7 +24,7 @@ namespace SistemaEscolar.Infrastructure.Persistence.Contexts.Configurations
             builder.Property(e => e.AuditCreateDate)
                 .HasColumnType("datetime");
             builder.Property(e => e.AuditUpdateDate)
-                .HasColumnType("datetime");
+                .HasColumnType("datetime");            
         }
     }
 }
