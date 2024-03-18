@@ -19,6 +19,7 @@ namespace SistemaEscolar.Application.Extensions
 
             services.AddScoped<IUserApplication, UserApplication>();
             services.AddScoped<IInstitutionApplication, InstitutionApplication>();
+            services.AddScoped<IEducationalLevelApplication, EducationalLevelApplication>();
 
             return services;
         }

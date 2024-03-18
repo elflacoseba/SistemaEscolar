@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.Extensions.Configuration;
 using SistemaEscolar.Application.Commons.Base;
 using SistemaEscolar.Application.Dtos.Institution.Request;
 using SistemaEscolar.Application.Dtos.Institution.Response;
-using SistemaEscolar.Application.Dtos.User.Response;
 using SistemaEscolar.Application.Interfaces;
 using SistemaEscolar.Application.Validators;
 using SistemaEscolar.Domain.Entities;
@@ -24,6 +22,7 @@ namespace SistemaEscolar.Application.Services
             _mapper = mapper;            
             _validationRules = validationRules;
         }
+
         public async Task<BaseResponse<IEnumerable<InstitutionResponseDto>>> GetAllInstitutions()
         {
             var response = new BaseResponse<IEnumerable<InstitutionResponseDto>>();
