@@ -10,6 +10,7 @@ namespace SistemaEscolar.API
         {
             var builder = WebApplication.CreateBuilder(args);
             var configuration = builder.Configuration;
+            var cors = "Cors";
 
             // Add services to the container.
             builder.Services.AddInjectionInfrastructure(configuration);
@@ -20,7 +21,19 @@ namespace SistemaEscolar.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(cors, builder =>
+                {
+                    builder.WithOrigins("*")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+
             var app = builder.Build();
+
+            app.UseCors(cors);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
