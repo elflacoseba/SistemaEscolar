@@ -203,9 +203,9 @@ namespace SistemaEscolar.Application.Services
                 new Claim(JwtRegisteredClaimNames.NameId, user.Email!),
                 new Claim(JwtRegisteredClaimNames.FamilyName, user.UserName!),
                 new Claim(JwtRegisteredClaimNames.GivenName, user.Email!),
-                new Claim(JwtRegisteredClaimNames.UniqueName, user.Id.ToString()!),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, Guid.NewGuid().ToString(), ClaimValueTypes.Integer64)
+                new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.Now.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
             };
 
             var token = new JwtSecurityToken(

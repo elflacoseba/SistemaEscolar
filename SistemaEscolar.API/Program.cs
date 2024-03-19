@@ -1,6 +1,10 @@
 
 using SistemaEscolar.Infrastructure.Extensions;
 using SistemaEscolar.Application.Extensions;
+using SistemaEscolar.API.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace SistemaEscolar.API
 {
@@ -16,10 +20,13 @@ namespace SistemaEscolar.API
             builder.Services.AddInjectionInfrastructure(configuration);
             builder.Services.AddInjectionApplication(configuration);
 
+            builder.Services.AddAuthentication(configuration);
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwagger();
+
 
             builder.Services.AddCors(options =>
             {
@@ -35,7 +42,7 @@ namespace SistemaEscolar.API
 
             app.UseCors(cors);
 
-            // Configure the HTTP request pipeline.
+            //// Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -44,8 +51,9 @@ namespace SistemaEscolar.API
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseAuthentication();
 
+            app.UseAuthorization();
 
             app.MapControllers();
 

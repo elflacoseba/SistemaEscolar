@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SistemaEscolar.Application.Dtos.Institution.Request;
-using SistemaEscolar.Application.Dtos.User.Request;
 using SistemaEscolar.Application.Interfaces;
-using SistemaEscolar.Domain.Entities;
 
 namespace SistemaEscolar.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class InstitutionController : ControllerBase
@@ -18,7 +16,7 @@ namespace SistemaEscolar.API.Controllers
         {
             _institutionApplication = institutionApplication;
         }
-
+        
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -33,7 +31,6 @@ namespace SistemaEscolar.API.Controllers
             return Ok(response);
         }
 
-        [AllowAnonymous]
         [HttpPost("Create")]
         public async Task<IActionResult> CreateInstitution([FromBody] InstitutionRequestDto requestDto)
         {
@@ -47,7 +44,7 @@ namespace SistemaEscolar.API.Controllers
             var response = await _institutionApplication.EditInstitution(institutionId, requestDto);
             return Ok(response);
         }
-
+        
         [HttpDelete("Delete/{institutionId:int}")]
         public async Task<IActionResult> DeleteInstitution(int institutionId)
         {
